@@ -8,6 +8,7 @@ import DoctorRecords from "./pages/DoctorRecords";
 import MedicalRecord from "./pages/MedicalRecord";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AddMedicalReport from "./pages/AddMedicalReport";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/admin-records" element={<AdminRecords />} />
         <Route path="/doctor-records" element={<DoctorRecords />} />
         <Route path="/medical-record/:id" element={<MedicalRecord />} />
+        <Route path="/add-report" element={<AddMedicalReport />} />
       </Routes>
     </Router>
   );

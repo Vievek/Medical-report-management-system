@@ -59,11 +59,22 @@ const ShowMedicalReports = ({ fetchUrl }) => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Medical Reports</h2>
+      {(user?.role === "admin" || user?.role === "doctor") && (
+        <>
+          <button
+            onClick={() => navigate("/add-report")}
+            className="my-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Add Report
+          </button>
+        </>
+      )}
       {records.length > 0 ? (
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="bg-gray-100">
               <th className="py-2 px-4 border-b">Doctor Name</th>
+              <th className="py-2 px-4 border-b">Patient Name</th>
               <th className="py-2 px-4 border-b">Diagnoses</th>
               <th className="py-2 px-4 border-b">Last Updated</th>
               <th className="py-2 px-4 border-b">Actions</th>
@@ -74,6 +85,9 @@ const ShowMedicalReports = ({ fetchUrl }) => {
               <tr key={record._id} className="hover:bg-gray-50">
                 <td className="py-2 px-4 border-b text-center">
                   {record.DoctorID.name}
+                </td>
+                <td className="py-2 px-4 border-b text-center">
+                  {record.PatientID.name}
                 </td>
                 <td className="py-2 px-4 border-b text-center">
                   {record.Diagnoses.join(", ")}
