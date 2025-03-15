@@ -12,6 +12,10 @@ const AdminDashboard = () => {
     navigate("/");
   };
 
+  const handleRecords = () => {
+    navigate("/admin-records");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
@@ -19,14 +23,22 @@ const AdminDashboard = () => {
           Admin Dashboard
         </h2>
         <p className="text-gray-600">Welcome, Admin {user?.name}!</p>
-        <button
-          onClick={handleLogout}
-          className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-        >
-          Logout
-        </button>
-        {/* Example child component */}
+
         <AdminDetails />
+        <div className="flex justify-center w-full gap-4 mt-4">
+          <button
+            onClick={handleRecords}
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            See My Medical History
+          </button>
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );

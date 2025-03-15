@@ -13,7 +13,7 @@ const PatientDashboard = () => {
   };
 
   const handleRecords = () => {
-    navigate("/records");
+    navigate("/patient-records");
   };
 
   return (
