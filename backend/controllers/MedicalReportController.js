@@ -102,7 +102,27 @@ exports.getMedicalRecordsByPatientId = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+// Get all medical records for a specific doctor
+exports.getMedicalRecordsByDoctorId = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
 
+    // Check if the doctor exists
+    const doctor = await User.findById(doctorId);
+    if (!doctor || doctor.role !== "doctor") {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+
+    // Find all medical records for the doctor
+    const medicalRecords = await MedicalReport.find({ DoctorID: doctorId })
+      .populate("PatientID", "name age gender role") // Populate patient details
+      .populate("DoctorID", "name specialization role"); // Populate doctor details
+
+    res.status(200).json(medicalRecords);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 // Search medical records by keyword
 exports.searchMedicalRecords = async (req, res) => {
   try {

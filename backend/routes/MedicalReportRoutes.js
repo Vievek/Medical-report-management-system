@@ -21,6 +21,10 @@ router.get(
   medicalReportController.getMedicalRecordsByPatientId
 ); // Get records by Patient ID
 router.get(
+  "/medical-report/doctor/:doctorId",
+  medicalReportController.getMedicalRecordsByDoctorId
+); // Get records by Doctor ID
+router.get(
   "/medical-report/search",
   medicalReportController.searchMedicalRecords
 ); // Search medical records

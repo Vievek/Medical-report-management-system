@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import PatientDashboard from "./pages/PatientDashboard";
 import PatientRecords from "./pages/PatientRecords";
 import AdminRecords from "./pages/AdminRecords";
+import DoctorRecords from "./pages/DoctorRecords";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/patient-records" element={<PatientRecords />} />
         <Route path="/admin-records" element={<AdminRecords />} />
+        <Route path="/doctor-records" element={<DoctorRecords />} />
       </Routes>
     </Router>
   );

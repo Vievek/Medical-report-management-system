@@ -11,6 +11,9 @@ const DoctorDashboard = () => {
     logout();
     navigate("/");
   };
+  const handleRecords = () => {
+    navigate("/doctor-records");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -19,14 +22,22 @@ const DoctorDashboard = () => {
           Doctor Dashboard
         </h2>
         <p className="text-gray-600">Welcome, Dr. {user?.name}!</p>
-        <button
-          onClick={handleLogout}
-          className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-        >
-          Logout
-        </button>
-        {/* Example child component */}
+
         <DoctorDetails />
+        <div className="flex justify-center w-full gap-4 mt-4">
+          <button
+            onClick={handleRecords}
+            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            See My Medical History
+          </button>
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
