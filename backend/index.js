@@ -4,6 +4,10 @@ const dotenv = require("dotenv");
 const MedicalReportRoutes = require("./routes/MedicalReportRoutes");
 const authRoutes = require("./routes/authRoutes");
 const app = express();
+const cors = require("cors");
+
+// Enable CORS
+app.use(cors());
 
 // Load environment variables
 dotenv.config();
