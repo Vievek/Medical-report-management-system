@@ -5,6 +5,7 @@ import PatientDashboard from "./pages/PatientDashboard";
 import PatientRecords from "./pages/PatientRecords";
 import AdminRecords from "./pages/AdminRecords";
 import DoctorRecords from "./pages/DoctorRecords";
+import MedicalRecord from "./pages/MedicalRecord";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/patient-records" element={<PatientRecords />} />
         <Route path="/admin-records" element={<AdminRecords />} />
         <Route path="/doctor-records" element={<DoctorRecords />} />
+        <Route path="/medical-record/:id" element={<MedicalRecord />} />
       </Routes>
     </Router>
   );

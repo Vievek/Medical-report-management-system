@@ -83,7 +83,7 @@ const ShowMedicalReports = ({ fetchUrl }) => {
                 </td>
                 <td className="py-2 px-4 border-b space-x-2 text-center">
                   <button
-                    onClick={() => navigate(`/medical-reports/${record._id}`)}
+                    onClick={() => navigate(`/medical-record/${record._id}`)}
                     className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600"
                   >
                     Show
@@ -92,7 +92,7 @@ const ShowMedicalReports = ({ fetchUrl }) => {
                     <>
                       <button
                         onClick={() =>
-                          navigate(`/medical-reports/edit/${record._id}`)
+                          navigate(`/medical-report/edit/${record._id}`)
                         }
                         className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600"
                       >
