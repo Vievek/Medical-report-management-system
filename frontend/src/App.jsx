@@ -9,6 +9,7 @@ import MedicalRecord from "./pages/MedicalRecord";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AddMedicalReport from "./pages/AddMedicalReport";
+import EditMedicalReport from "./pages/EditMedicalReport";
 
 const App = () => {
   return (
@@ -23,6 +24,10 @@ const App = () => {
         <Route path="/doctor-records" element={<DoctorRecords />} />
         <Route path="/medical-record/:id" element={<MedicalRecord />} />
         <Route path="/add-report" element={<AddMedicalReport />} />
+        <Route
+          path="/medical-report/edit/:id"
+          element={<EditMedicalReport />}
+        />
       </Routes>
     </Router>
   );

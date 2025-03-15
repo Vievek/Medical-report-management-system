@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-
-const AddMedicalReport = () => {
+const EditMedicalReport = () => {
   const { user } = useUser();
-  const [patients, setPatients] = useState([]);
-  const [doctors, setDoctors] = useState([]);
+  const { id } = useParams(); // Get the report ID from the URL
   const [formData, setFormData] = useState({
     PatientID: "",
     DoctorID: "",
@@ -15,8 +13,50 @@ const AddMedicalReport = () => {
     TestResults: [],
     Notes: "",
   });
-  const [error, setError] = useState(null);
+  const [patients, setPatients] = useState([]); // State for patients
+  const [doctors, setDoctors] = useState([]); // State for doctors
+  const [loading, setLoading] = useState(true); // State for loading
+  const [error, setError] = useState(null); // State for errors
   const navigate = useNavigate();
+
+  // Fetch the medical report by ID
+  useEffect(() => {
+    console.log(user);
+    const fetchReport = async () => {
+      try {
+        console.log("Fetching medical report...");
+
+        const response = await fetch(
+          `http://localhost:3000/api/medical-reports/medical-reports/${id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch medical report");
+        }
+        const reportData = await response.json();
+        console.log("Medical report:", reportData);
+
+        // Set the form data with the fetched report
+        setFormData({
+          PatientID: reportData.PatientID,
+          DoctorID: reportData.DoctorID,
+          Diagnoses: reportData.Diagnoses,
+          Treatments: reportData.Treatments,
+          Prescriptions: reportData.Prescriptions,
+          TestResults: reportData.TestResults,
+          Notes: reportData.Notes,
+          patientName: reportData.PatientID.name,
+          doctorName: reportData.DoctorID.name,
+        });
+      } catch (err) {
+        console.error("Error fetching medical report:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReport();
+  }, [id]);
 
   // Fetch patients and doctors
   useEffect(() => {
@@ -66,15 +106,16 @@ const AddMedicalReport = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError(null);
 
     try {
-      console.log("Submitting form data:", formData);
+      console.log("Updating medical report:", formData);
 
       const response = await fetch(
-        "http://localhost:3000/api/medical-reports/medical-reports",
+        `http://localhost:3000/api/medical-reports/medical-reports/${id}`,
         {
-          method: "POST",
+          method: "PUT", // Use PUT to update the report
           headers: {
             "Content-Type": "application/json",
           },
@@ -83,11 +124,11 @@ const AddMedicalReport = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to create medical report");
+        throw new Error("Failed to update medical report");
       }
 
       const data = await response.json();
-      console.log("Medical report created:", data);
+      console.log("Medical report updated:", data);
 
       if (user.role === "admin") {
         navigate("/admin-dashboard");
@@ -97,23 +138,24 @@ const AddMedicalReport = () => {
         navigate("/");
       }
     } catch (err) {
-      console.error("Error creating medical report:", err);
+      console.error("Error updating medical report:", err);
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <div className="text-center py-4">Loading...</div>;
+  }
 
   if (error) {
     return <div className="text-center py-4 text-red-500">Error: {error}</div>;
   }
 
-  // Render the form only if patients and doctors are fetched
-  if (patients.length === 0 || doctors.length === 0) {
-    return <div className="text-center py-4">Fetching data...</div>;
-  }
-
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Add Medical Report</h2>
+      <h2 className="text-2xl font-bold mb-4">Edit Medical Report</h2>
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-md"
@@ -131,7 +173,7 @@ const AddMedicalReport = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">Select a patient</option>
+              <option value="">{formData.patientName}</option>
               {patients.map((patient) => (
                 <option key={patient._id} value={patient._id}>
                   {patient.name}
@@ -152,7 +194,7 @@ const AddMedicalReport = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">Select a doctor</option>
+              <option value="">{formData.doctorName}</option>
               {doctors.map((doctor) => (
                 <option key={doctor._id} value={doctor._id}>
                   {doctor.name}
@@ -260,9 +302,10 @@ const AddMedicalReport = () => {
         <div className="mt-6">
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Create Medical Report
+            {loading ? "Updating..." : "Update Medical Report"}
           </button>
         </div>
       </form>
@@ -270,4 +313,4 @@ const AddMedicalReport = () => {
   );
 };
 
-export default AddMedicalReport;
+export default EditMedicalReport;
