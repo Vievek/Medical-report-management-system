@@ -58,7 +58,6 @@ const ShowMedicalReports = ({ fetchUrl }) => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Medical Reports</h2>
       {(user?.role === "admin" || user?.role === "doctor") && (
         <>
           <button
