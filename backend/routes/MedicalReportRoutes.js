@@ -17,11 +17,11 @@ router.delete(
 
 // Additional routes
 router.get(
-  "/medical-reports/patient/:patientId",
+  "/medical-report/patient/:patientId",
   medicalReportController.getMedicalRecordsByPatientId
 ); // Get records by Patient ID
 router.get(
-  "/medical-reports/search",
+  "/medical-report/search",
   medicalReportController.searchMedicalRecords
 ); // Search medical records
 

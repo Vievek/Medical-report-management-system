@@ -112,31 +112,49 @@ exports.searchMedicalRecords = async (req, res) => {
       return res.status(400).json({ error: "Keyword is required" });
     }
 
-    // Search across all fields (including populated data)
-    const medicalRecords = await MedicalReport.find({
-      $or: [
-        { Diagnoses: { $regex: keyword, $options: "i" } },
-        { Treatments: { $regex: keyword, $options: "i" } },
-        { Prescriptions: { $regex: keyword, $options: "i" } },
-        { TestResults: { $regex: keyword, $options: "i" } },
-        { Notes: { $regex: keyword, $options: "i" } },
-      ],
-    })
-      .populate({
-        path: "PatientID",
-        match: { name: { $regex: keyword, $options: "i" } }, // Search by patient name
-        select: "name age gender role",
-      })
-      .populate({
-        path: "DoctorID",
-        match: { name: { $regex: keyword, $options: "i" } }, // Search by doctor name
-        select: "name specialization role",
-      });
+    // Fetch all medical records and populate PatientID and DoctorID
+    const medicalRecords = await MedicalReport.find()
+      .populate("PatientID", "name age gender role") // Populate patient details
+      .populate("DoctorID", "name specialization role"); // Populate doctor details
 
-    // Filter out records where neither patient nor doctor matches the keyword
-    const filteredRecords = medicalRecords.filter(
-      (record) => record.PatientID || record.DoctorID
-    );
+    // Filter records where the keyword matches any field (including populated data)
+    const filteredRecords = medicalRecords.filter((record) => {
+      // Check if the keyword matches any of the medical record fields
+      const matchesDiagnoses = record.Diagnoses.some((diagnosis) =>
+        diagnosis.toLowerCase().includes(keyword.toLowerCase())
+      );
+      const matchesTreatments = record.Treatments.some((treatment) =>
+        treatment.toLowerCase().includes(keyword.toLowerCase())
+      );
+      const matchesPrescriptions = record.Prescriptions.some((prescription) =>
+        prescription.toLowerCase().includes(keyword.toLowerCase())
+      );
+      const matchesTestResults = record.TestResults.some((testResult) =>
+        testResult.toLowerCase().includes(keyword.toLowerCase())
+      );
+      const matchesNotes = record.Notes.toLowerCase().includes(
+        keyword.toLowerCase()
+      );
+
+      // Check if the keyword matches the populated PatientID or DoctorID fields
+      const matchesPatientName = record.PatientID?.name
+        .toLowerCase()
+        .includes(keyword.toLowerCase());
+      const matchesDoctorName = record.DoctorID?.name
+        .toLowerCase()
+        .includes(keyword.toLowerCase());
+
+      // Return true if any of the fields match the keyword
+      return (
+        matchesDiagnoses ||
+        matchesTreatments ||
+        matchesPrescriptions ||
+        matchesTestResults ||
+        matchesNotes ||
+        matchesPatientName ||
+        matchesDoctorName
+      );
+    });
 
     res.status(200).json(filteredRecords);
   } catch (err) {
