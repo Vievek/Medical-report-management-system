@@ -46,6 +46,7 @@ const EditMedicalReport = () => {
           Notes: reportData.Notes,
           patientName: reportData.PatientID.name,
           doctorName: reportData.DoctorID.name,
+          LastUpdated: new Date(),
         });
       } catch (err) {
         console.error("Error fetching medical report:", err);
@@ -173,7 +174,7 @@ const EditMedicalReport = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">{formData.patientName}</option>
+              <option value={formData.PatientID}>{formData.patientName}</option>
               {patients.map((patient) => (
                 <option key={patient._id} value={patient._id}>
                   {patient.name}
@@ -194,7 +195,7 @@ const EditMedicalReport = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">{formData.doctorName}</option>
+              <option value={formData.DoctorID}>{formData.doctorName}</option>
               {doctors.map((doctor) => (
                 <option key={doctor._id} value={doctor._id}>
                   {doctor.name}

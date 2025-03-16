@@ -19,7 +19,7 @@ const medicalReportSchema = new mongoose.Schema({
   }, // Foreign Key referencing User
   DateCreated: { type: Date, default: Date.now }, // Automatically set to current date
   LastUpdated: { type: Date, default: Date.now }, // Automatically set to current date
-  Diagnoses: [{ type: String }], // List of diagnoses
+  Diagnoses: [{ type: String, required: true }], // List of diagnoses
   Treatments: [{ type: String }], // List of treatments
   Prescriptions: [{ type: String }], // List of prescribed medications
   TestResults: [{ type: String }], // List of test results (lab, imaging, etc.)
